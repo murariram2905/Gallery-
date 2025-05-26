@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollegeTips Photo Gallery</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Lightbox2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #f8faf8;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2e2323;
+        }
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        .nav-links li {
+            margin-left: 20px;
+        }
+        .nav-links li a {
+            text-decoration: none;
+            color: #2e2323;
+            transition: color 0.3s ease;
+        }
+        .nav-links li a:hover {
+            color: #007bff;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(26, 249, 194, 0.932), rgba(2, 192, 62, 0.94));
+        }
+        .gallery-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .filter-btn {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: #fff;
+            color: #333;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #2e2323;
+            color: #fff;
+            transform: scale(1.1);
+        }
+        .filter-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(62, 61, 61, 0.5);
+        }
+
+        /* Gallery Container */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            position: relative;
+        }
+        .card.hidden {
+            opacity: 0;
+            display: none;
+        }
+        .card:hover {
+            transform: scale(0.98);
+        }
+        .card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .card:hover img {
+            transform: scale(1.1);
+        }
+        .card h3 {
+            padding: 15px;
+            text-align: center;
+            margin: 0;
+            color: #333;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .card:hover h3 {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(100%);
+        }
+        .card:hover .card-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .card-info h4 {
+            margin: 0 0 5px;
+        }
+        .card-info p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .card a:focus {
+            outline: 3px solid #ff6b6b;
+            outline-offset: 2px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .gallery-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 576px) {
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+            .gallery-title {
+                font-size: 1.8rem;
+            }
+            .filter-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            .card img {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">CollegeTips.in</div>
+        <ul class="nav-links">
+            <li><a href="#">Gallery Collection</a></li>
+        </ul>
+    </div>
+
+    <section class="gallery-section">
+        <div class="container">
+            <h2 class="gallery-title">Our Awesome Moments</h2>
+            <div class="filter-buttons" role="tablist">
+                <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+                <button class="filter-btn" data-filter="team-vibes" role="tab" aria-selected="false">Team Vibes</button>
+                <button class="filter-btn" data-filter="creative-campaigns" role="tab" aria-selected="false">Creative Campaigns</button>
+                <button class="filter-btn" data-filter="work-hard-play-hard" role="tab" aria-selected="false">Work Hard, Play Hard</button>
+                <button class="filter-btn" data-filter="behind-the-scenes" role="tab" aria-selected="false">Behind-The-Scenes</button>
+                <button class="filter-btn" data-filter="project-milestones" role="tab" aria-selected="false">Project Milestones</button>
+                <button class="filter-btn" data-filter="fun-activities" role="tab" aria-selected="false">Fun Activities</button>
+            </div>
+            <div class="gallery-container">
+                <div class="card team-vibes">
+                    <a href="./images/photo1.png" data-lightbox="gallery" data-title="Team brainstorming session">
+                        <img src="images/photo1.png" CollegeTips team brainstorming for a new campaign">
+                        <h3>Team Vibes 🤝</h3>
+                        <div class="card-info">
+                            <h4>Team Collaboration</h4>
+                            <p>Captures the essence of teamwork and synergy.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="card creative-campaigns">
+                    <a href="images/photo22.png" data-lightbox="gallery" data-title="Designing a vibrant campaign poster">
+                        <img src="images/photo22.png" alt="Designing a vibrant campaign poster for CollegeTips">
+                        <h3>Creative Campaigns 🎨</h3>
+                        <div class="card-info">
+                            <h4>Innovative Marketing</h4>
+                            <p>Showcases imaginative strategies in our campaigns.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="card work-hard-play-hard">
+                    <a href="images/photo3.png" data-lightbox="gallery" data-title="Team outing at the arcade">
+                        <img src="images/photo3.png" alt="CollegeTips team enjoying an arcade outing">
+                        <h3>Work & Play Halls🎉</h3>
+                        <div class="card-info">
+                            <h4>Balance and Fun</h4>
+                            <p>Balancing hard work with team fun.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="card behind-the-scenes">
+                    <a href="images/photo4.jpg" data-lightbox="gallery" data-title="Setting up for a photoshoot">
+                        <img src="images/photo4.jpg" alt="CollegeTips team setting up for a photoshoot">
+                        <h3>Extra Activities 🎥</h3>
+                        <div class="card-info">
+                            <h4>Process and Transparency</h4>
+                            <p>A glimpse into our daily operations.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="card project-milestones">
+                    <a href="images/photo5.png" data-lightbox="gallery" data-title="Celebrating a project milestone">
+                        <img src="images/photo5.png" alt="CollegeTips team celebrating a project milestone">
+                        <h3>Project Milestones 🚀</h3>
+                        <div class="card-info">
+                            <h4>Progress and Achievement</h4>
+                            <p>Highlighting key project successes.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="card fun-activities">
+                    <a href="images/photo6.jpg" data-lightbox="gallery" data-title="Team bonding activity">
+                        <img src="images/photo6.jpg" alt="CollegeTips team at a fun bonding activity">
+                        <h3>Fun Activities 😄</h3>
+                        <div class="card-info">
+                            <h4>Team Bonding</h4>
+                            <p>Strengthening team relationships.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Lightbox2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <!-- Custom JS for Filtering -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Update active button state
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    button.classList.add('active');
+                    button.setAttribute('aria-selected', 'true');
+
+                    // Filter gallery items
+                    const filter = button.getAttribute('data-filter');
+                    galleryItems.forEach(item => {
+                        if (filter === 'all' || item.classList.contains(filter)) {
+                            item.classList.remove('hidden');
+                            setTimeout(() => item.style.opacity = '1', 10);
+                        } else {
+                            item.style.opacity = '0';
+                            setTimeout(() => item.classList.add('hidden'), 300);
+                        }
+                    });
+                });
+            });
+
+            // Initialize lightbox
+            lightbox.option({
+                'resizeDuration': 200,
+                'wrapAround': true,
+                'disableScrolling': true
+            });
+        });
+    </script>
+</body>
+</html>
